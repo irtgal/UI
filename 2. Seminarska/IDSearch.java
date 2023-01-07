@@ -8,53 +8,14 @@ public class IDSearch {
 
     static Counter counter = new Counter();
 
-    public static List<Warehouse.Move> search(Warehouse warehouse) {
-        counter.startTiming();
-
+    static List<Warehouse.Move> search(Warehouse warehouse) {
         for (int depthLimit = 0; depthLimit < Integer.MAX_VALUE; depthLimit++) {
-            System.out.println("Globina iskanja je " + depthLimit);
+            System.out.println("Searching with depth limit " + depthLimit);
 
-            Stack<Warehouse> stack = new Stack<>();
             Set<String> visited = new HashSet<>();
-
-            stack.push(warehouse);
-            visited.add(warehouse.toString());
-
-            while (!stack.isEmpty()) {
-                Warehouse currentState = stack.peek();
-                // To mi ni cist jasno, zakaj je tole potrebno
-                // if (curState.equals(warehouse))
-                // mvs.setLength(0);
-                if (currentState.isSolved()) {
-                    counter.stopTiming();
-                    return currentState.getMoves();
-                }
-
-                boolean found = false;
-                if (currentState.getMoves().size() <= depthLimit) {
-                    // najdi neobiskano naslednje stanje
-                    for (int fromCol = 0; fromCol < currentState.numCols; fromCol++) {
-                        for (int toCol = 0; toCol < currentState.numCols; toCol++) {
-                            if (currentState.canMove(fromCol, toCol)) {
-                                Warehouse nextState = currentState.deepClone();
-                                String mv = nextState.move(fromCol, toCol).toString();
-                                if (!visited.contains(nextState.toString())) {
-                                    stack.push(nextState);
-                                    visited.add(nextState.toString());
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (found) {
-                            break;
-                        }
-                    }
-                }
-
-                if (!found) {
-                    stack.pop();
-                }
+            List<Warehouse.Move> solution = depthLimitedSearch(warehouse, depthLimit, visited);
+            if (!solution.isEmpty()) {
+                return solution;
             }
 
             System.out.println("-----------------------------------------------------------");
@@ -62,9 +23,38 @@ public class IDSearch {
         return new ArrayList<Warehouse.Move>();
     }
 
+    static List<Warehouse.Move> depthLimitedSearch(Warehouse warehouse, int depthLimit, Set<String> visited) {
+        if (warehouse.isSolved()) {
+            return warehouse.getMoves();
+        }
+
+        if (depthLimit <= 0) {
+            return new ArrayList<Warehouse.Move>();
+        }
+
+        visited.add(warehouse.toString());
+
+        for (int fromCol = 0; fromCol < warehouse.numCols; fromCol++) {
+            for (int toCol = 0; toCol < warehouse.numCols; toCol++) {
+                if (warehouse.canMove(fromCol, toCol)) {
+                    Warehouse nextState = warehouse.deepClone();
+                    nextState.move(fromCol, toCol);
+                    if (!visited.contains(nextState.toString())) {
+                        List<Warehouse.Move> solution = depthLimitedSearch(nextState, depthLimit - 1, visited);
+                        if (!solution.isEmpty()) {
+                            solution.addAll(warehouse.getMoves());
+                            return solution;
+                        }
+                    }
+                }
+            }
+        }
+        return new ArrayList<Warehouse.Move>();
+    }
+
     public static void main(String[] args) throws Exception {
-        String initialFile = "primer5_zacetna.txt";
-        String finalFile = "primer5_koncna.txt";
+        String initialFile = "primer1_zacetna.txt";
+        String finalFile = "primer1_koncna.txt";
         char[][] initialState = Warehouse.readStateFromFile(initialFile);
         char[][] finalState = Warehouse.readStateFromFile(finalFile);
         Warehouse w = new Warehouse(initialState, finalState);
