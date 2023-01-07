@@ -6,8 +6,11 @@ import java.util.*;
 
 public class IDSearch {
 
+    static Counter counter = new Counter();
+
     public static List<Warehouse.Move> search(Warehouse warehouse) {
-        System.out.println(warehouse);
+        counter.startTiming();
+
         for (int depthLimit = 0; depthLimit < Integer.MAX_VALUE; depthLimit++) {
             System.out.println("Globina iskanja je " + depthLimit);
 
@@ -17,17 +20,14 @@ public class IDSearch {
             stack.push(warehouse);
             visited.add(warehouse.toString());
 
-            List<Warehouse.Move> foundMoves = new ArrayList<>();
             while (!stack.isEmpty()) {
                 Warehouse currentState = stack.peek();
                 // To mi ni cist jasno, zakaj je tole potrebno
                 // if (curState.equals(warehouse))
                 // mvs.setLength(0);
                 if (currentState.isSolved()) {
-                    System.out.println("Resitev IDDFS : " + currentState.getMoves().size() + " korakov");
-                    foundMoves = currentState.getMoves();
-                    System.out.println(foundMoves);
-                    return foundMoves;
+                    counter.stopTiming();
+                    return currentState.getMoves();
                 }
 
                 boolean found = false;
@@ -62,21 +62,16 @@ public class IDSearch {
         return new ArrayList<Warehouse.Move>();
     }
 
-    public static boolean containsState(ArrayList<Warehouse> list, char[][] state) {
-        for (Warehouse warehouse : list) {
-            if (Arrays.deepEquals(warehouse.state, state)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static void main(String[] args) throws IOException {
-        String initialFile = "primer4_zacetna.txt";
-        String finalFile = "primer4_koncna.txt";
+    public static void main(String[] args) throws Exception {
+        String initialFile = "primer5_zacetna.txt";
+        String finalFile = "primer5_koncna.txt";
         char[][] initialState = Warehouse.readStateFromFile(initialFile);
         char[][] finalState = Warehouse.readStateFromFile(finalFile);
         Warehouse w = new Warehouse(initialState, finalState);
-        search(w);
+
+        List<Warehouse.Move> moves = search(w);
+        Warehouse temp = new Warehouse(initialState, finalState);
+        Helper.simulateMoves(temp, moves);
+        System.out.print(DFS.counter);
     }
 }
