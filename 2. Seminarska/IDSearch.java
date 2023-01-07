@@ -52,8 +52,8 @@ public class IDSearch {
     }
 
     public static void main(String[] args) throws Exception {
-        String initialFile = "primer5_zacetna.txt";
-        String finalFile = "primer5_koncna.txt";
+        String initialFile = "primer4_zacetna.txt";
+        String finalFile = "primer4_koncna.txt";
         char[][] initialState = Warehouse.readStateFromFile(initialFile);
         char[][] finalState = Warehouse.readStateFromFile(finalFile);
         Warehouse w = new Warehouse(initialState, finalState);
