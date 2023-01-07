@@ -42,7 +42,6 @@ public class IDSearch {
                     if (!visited.contains(nextState.toString())) {
                         List<Warehouse.Move> solution = depthLimitedSearch(nextState, depthLimit - 1, visited);
                         if (!solution.isEmpty()) {
-                            solution.addAll(warehouse.getMoves());
                             return solution;
                         }
                     }
@@ -53,8 +52,8 @@ public class IDSearch {
     }
 
     public static void main(String[] args) throws Exception {
-        String initialFile = "primer1_zacetna.txt";
-        String finalFile = "primer1_koncna.txt";
+        String initialFile = "primer5_zacetna.txt";
+        String finalFile = "primer5_koncna.txt";
         char[][] initialState = Warehouse.readStateFromFile(initialFile);
         char[][] finalState = Warehouse.readStateFromFile(finalFile);
         Warehouse w = new Warehouse(initialState, finalState);
