@@ -7,7 +7,7 @@ public class IDSearch {
 
     public static void search(Warehouse warehouse) {
         System.out.println(warehouse);
-        for (int depthLimit = 0; depthLimit < warehouse.numRows * warehouse.numCols; depthLimit++) {
+        for (int depthLimit = 0; depthLimit < Integer.MAX_VALUE; depthLimit++) {
             System.out.println("Globina iskanja je " + depthLimit);
 
             Stack<Warehouse> stack = new Stack<>();
@@ -32,7 +32,7 @@ public class IDSearch {
                     for (int fromCol = 0; fromCol < curState.numCols; fromCol++) {
                         for (int toCol = 0; toCol < curState.numCols; toCol++) {
                             if (curState.canMove(fromCol, toCol)) {
-                                Warehouse nextState = new Warehouse(curState.state, warehouse.finalState);
+                                Warehouse nextState = curState.deepClone();
                                 String mv = nextState.move(fromCol, toCol).toString();
                                 if (!containsState(visited, nextState.state)) {
                                     mvs.append(mv).append("\n");
@@ -66,8 +66,8 @@ public class IDSearch {
         return false;
     }
     public static void main(String[] args) throws IOException {
-        String initialFile = "primer2_zacetna.txt";
-        String finalFile = "primer2_koncna.txt";
+        String initialFile = "2. Seminarska/primer2_zacetna.txt";
+        String finalFile = "2. Seminarska/primer2_koncna.txt";
         char[][] initialState = Warehouse.readStateFromFile(initialFile);
         char[][] finalState = Warehouse.readStateFromFile(finalFile);
         Warehouse w = new Warehouse(initialState,finalState);

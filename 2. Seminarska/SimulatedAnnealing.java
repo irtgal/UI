@@ -31,11 +31,11 @@ public class SimulatedAnnealing {
         double temperature = INITIAL_TEMPERATURE;
 
         // initialize the best solution to the current solution
-        Warehouse bestSolution = new Warehouse(warehouse.state, warehouse.finalState);
+        Warehouse bestSolution = warehouse.deepClone();
         double bestEnergy = bestSolution.calculateStateDistance();
 
         // initialize the current solution to the initial solution
-        Warehouse currentSolution = new Warehouse(warehouse.state, warehouse.finalState);
+        Warehouse currentSolution = warehouse.deepClone();
         double currentEnergy = currentSolution.calculateStateDistance();
 
         while (temperature > MIN_TEMPERATURE) {
@@ -59,11 +59,11 @@ public class SimulatedAnnealing {
                     currentEnergy = newEnergy;
                     if (newEnergy < bestEnergy) {
                         bestEnergy = newEnergy;
-                        bestSolution = new Warehouse(currentSolution.state, currentSolution.finalState);
+                        bestSolution = currentSolution.deepClone();
                     }
                 } else {
                     // revert to the previous solution
-                    currentSolution = new Warehouse(bestSolution.state, bestSolution.finalState);
+                    currentSolution = bestSolution.deepClone();
                     currentEnergy = bestEnergy;
                 }
 
