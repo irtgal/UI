@@ -3,8 +3,8 @@ import java.util.Random;
 import java.util.*;
 
 public class Genetsko {
-    static String initialFile = "primer4_zacetna.txt";
-    static String finalFile = "primer4_koncna.txt";
+    static String initialFile = "primer5_zacetna.txt";
+    static String finalFile = "primer5_koncna.txt";
 
     public static void main(String[] args) throws Exception {
         char[][] initialState = Warehouse.readStateFromFile(initialFile);
@@ -87,6 +87,30 @@ class GeneticAlgorithm {
 
     }
 
+    // public Warehouse selectParent() {
+    // // Calculate the total fitness score of all individuals in the population
+    // double totalFitness = 0;
+    // for (Warehouse warehouse : population) {
+    // totalFitness += warehouse.stateDistance;
+    // }
+    // if (totalFitness == 0) {
+    // return population.get(new Random().nextInt(POPULATION_SIZE));
+    // }
+    // // Select the first parent using the roulette wheel selection method
+    // double randomNumber = new Random().nextDouble() * totalFitness;
+    // double runningTotal = 0;
+    // Warehouse parent = null;
+    // for (Warehouse warehouse : population) {
+    // runningTotal += warehouse.stateDistance;
+    // if (runningTotal > randomNumber) {
+    // parent = warehouse;
+    // break;
+    // }
+    // }
+    // return parent;
+
+    // }
+
     public void generateNextGeneration() {
         // sort population by fitness
         population.sort((a, b) -> Double.compare(-b.stateDistance, -a.stateDistance));
@@ -102,7 +126,6 @@ class GeneticAlgorithm {
             warehouse.makeRandomMove();
         }
         generation++;
-
     }
 
     public Warehouse run() {

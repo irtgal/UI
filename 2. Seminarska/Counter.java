@@ -44,8 +44,10 @@ public class Counter {
 
     public String toString() {
         // every property in a new line
-        return "Explored nodes: " + numExploredNodes + "\nMax depth: " + maxDepth + "\nMax memory: " + maxMemory
-                + "\nTime in seconds: " + timeInSeconds;
+        return "Explored nodes: " + numExploredNodes +
+                "\nMax depth: " + maxDepth +
+                "\nMax memory: " + maxMemory + " warehouses" +
+                "\nTime in seconds: " + timeInSeconds;
     }
 
 }
