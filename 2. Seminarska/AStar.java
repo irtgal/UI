@@ -2,8 +2,8 @@ import java.util.*;
 
 class AStar {
 
-    static String initialFile = "primer5_zacetna.txt";
-    static String finalFile = "primer5_koncna.txt";
+    static String initialFile = "2. Seminarska/primer5_zacetna.txt";
+    static String finalFile = "2. Seminarska/primer5_koncna.txt";
 
     static Counter counter = new Counter();
 

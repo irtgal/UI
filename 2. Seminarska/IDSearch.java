@@ -9,7 +9,9 @@ public class IDSearch {
     static Counter counter = new Counter();
 
     static List<Warehouse.Move> search(Warehouse warehouse) {
+        counter.startTiming();
         for (int depthLimit = 0; depthLimit < Integer.MAX_VALUE; depthLimit++) {
+            counter.checkMaxDepth(depthLimit);
             System.out.println("Searching with depth limit " + depthLimit);
 
             Set<String> visited = new HashSet<>();
@@ -25,6 +27,7 @@ public class IDSearch {
 
     static List<Warehouse.Move> depthLimitedSearch(Warehouse warehouse, int depthLimit, Set<String> visited) {
         if (warehouse.isSolved()) {
+            counter.stopTiming();
             return warehouse.getMoves();
         }
 
@@ -33,6 +36,8 @@ public class IDSearch {
         }
 
         visited.add(warehouse.toString());
+        counter.checkMaxMemory(visited.size());
+        counter.incrementExploredNodes();
 
         for (int fromCol = 0; fromCol < warehouse.numCols; fromCol++) {
             for (int toCol = 0; toCol < warehouse.numCols; toCol++) {
@@ -52,8 +57,8 @@ public class IDSearch {
     }
 
     public static void main(String[] args) throws Exception {
-        String initialFile = "primer1_zacetna.txt";
-        String finalFile = "primer1_koncna.txt";
+        String initialFile = "primer5_zacetna.txt";
+        String finalFile = "primer5_koncna.txt";
         char[][] initialState = Warehouse.readStateFromFile(initialFile);
         char[][] finalState = Warehouse.readStateFromFile(finalFile);
         Warehouse w = new Warehouse(initialState, finalState);
@@ -61,6 +66,6 @@ public class IDSearch {
         List<Warehouse.Move> moves = search(w);
         Warehouse temp = new Warehouse(initialState, finalState);
         Helper.simulateMoves(temp, moves);
-        System.out.print(DFS.counter);
+        System.out.print(IDSearch.counter);
     }
 }
