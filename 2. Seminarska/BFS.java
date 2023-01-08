@@ -2,8 +2,8 @@ import java.util.*;
 
 class BFS {
 
-    static String initialFile = "primer4_zacetna.txt";
-    static String finalFile = "primer4_koncna.txt";
+    static String initialFile = "2. Seminarska/primer5_zacetna.txt";
+    static String finalFile = "2. Seminarska/primer5_koncna.txt";
 
     public static Counter counter = new Counter();
 
