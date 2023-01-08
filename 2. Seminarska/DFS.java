@@ -2,8 +2,8 @@ import java.util.*;
 
 class DFS {
 
-    static String initialFile = "primer2_zacetna.txt";
-    static String finalFile = "primer2_koncna.txt";
+    static String initialFile = "primer3_zacetna.txt";
+    static String finalFile = "primer3_koncna.txt";
 
     static Counter counter = new Counter();
 
